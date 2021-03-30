@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinations</title>
+</head>
+<body>
+    <h1>These are destinations</h1>
+    <ul>
+        <!-- Go through the DB and listing the destination title -->
+    <% for(let destination of destinations) { %>
+        <li><%= destination.title %> </li>
+    <% } %>
+    </ul>   
+</body>
+</html>

@@ -21,10 +21,9 @@ app.get('/', (req,res)=>{
     res.render('home')
 })
 
-app.get('/makedestination', async(req, res)=>{
-    const destination = new Destination({title: 'Hármashatárhegy', distance: 5, description: 'Szép', location: 'Buda'});
-    await destination.save;
-    res.send(destination);
+app.get('/destination', async(req, res)=>{
+    const destinations = await Destination.find();
+    res.render('destinations/index', {destinations});
 })
 
 app.listen(3000, ()=> {

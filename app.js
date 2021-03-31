@@ -17,16 +17,28 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
+app.use(express.urlencoded({extended: true}))
+
 app.get('/', (req,res)=>{
     res.render('home')
 })
 
-app.get('/destination', async(req, res)=>{
+app.get('/destinations', async(req, res)=>{
     const destinations = await Destination.find();
     res.render('destinations/index', {destinations});
 })
 
-app.get('/destination/:id', async(req,res) => {
+app.post('/destinations', async(req,res) =>{
+    const destination = new Destination(req.body.destination);
+    await destination.save();
+    res.redirect('/destinations')
+})
+
+app.get('/destinations/new', (req,res) => {
+    res.render('destinations/new')
+})
+
+app.get('/destinations/:id', async(req,res) => {
     const destination = await Destination.findById(req.params.id)
     res.render('destinations/show', {destination});
 })

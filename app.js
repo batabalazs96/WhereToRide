@@ -26,6 +26,11 @@ app.get('/destination', async(req, res)=>{
     res.render('destinations/index', {destinations});
 })
 
+app.get('/destination/:id', async(req,res) => {
+    const destination = await Destination.findById(req.params.id)
+    res.render('destinations/show', {destination});
+})
+
 app.listen(3000, ()=> {
     console.log('Server is running...');
 })

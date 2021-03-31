@@ -11,7 +11,7 @@
     <ul>
         <!-- Go through the DB and listing the destination title -->
     <% for(let destination of destinations) { %>
-        <li><%= destination.title %> </li>
+        <li><a href="/destination/<%= destination.id %> "><%= destination.title %></a> </li>
     <% } %>
     </ul>   
 </body>

@@ -10,5 +10,8 @@
     <h1>This is <%= destination.title %> page</h1>
     <label for="description"></label>
     <p id="description"><%= destination.description %></p>
+    <form action="/destinations/<%= destination._id %>/edit">
+      <button type="submit">Edit destination</button>
+    </form>
   </body>
 </html>

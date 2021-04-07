@@ -52,6 +52,11 @@ app.put('/destinations/:id', async(req, res) => {
     res.redirect(`/destinations/${destination._id}`);
 })
 
+app.delete('/destinations/:id', async(req,res) =>{
+    await Destination.findByIdAndDelete(req.params.id)
+    res.redirect('/destinations')
+})
+
 app.get('/destinations/:id/edit', async(req,res) => {
     const destination = await Destination.findById(req.params.id)
     res.render('destinations/edit', {destination});

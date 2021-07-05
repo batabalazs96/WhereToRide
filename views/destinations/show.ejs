@@ -1,5 +1,6 @@
 <% layout('layouts/boilerplate') -%>
 <h1>This is <%= destination.title %> page</h1>
+<img src="<%= destination.image %> " />
 <label for="description"></label>
 <p id="description"><%= destination.description %></p>
 <form action="/destinations/<%= destination._id %>/edit">

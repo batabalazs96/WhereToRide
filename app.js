@@ -4,6 +4,7 @@ const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const path = require('path');
 const mongoose = require('mongoose');
+const { destinationSchema } = require('./schemas.js');
 const Destination = require('./models/destination');
 const methodOverride = require('method-override');
 const { findByIdAndUpdate } = require('./models/destination');
@@ -25,6 +26,16 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
+const validateDestination = (req, res, next) => {
+    const { error } = destinationSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
 app.get('/', (req, res) => {
     res.render('home')
 })
@@ -34,8 +45,7 @@ app.get('/destinations', catchAsync(async (req, res) => {
     res.render('destinations/index', { destinations });
 }))
 
-app.post('/destinations', catchAsync(async (req, res, next) => {
-    if (!req.body.destination) throw new ExpressError('Invalid Destination Data', 400);
+app.post('/destinations', validateDestination, catchAsync(async (req, res, next) => {
     const destination = new Destination(req.body.destination);
     await destination.save();
     res.redirect('/destinations')
@@ -52,7 +62,7 @@ app.get('/destinations/:id', catchAsync(async (req, res) => {
     res.render('destinations/show', { destination });
 }))
 
-app.put('/destinations/:id', catchAsync(async (req, res) => {
+app.put('/destinations/:id', validateDestination, catchAsync(async (req, res) => {
     const destination = await Destination.findByIdAndUpdate(req.params.id, req.body.destination);
     res.redirect(`/destinations/${destination._id}`);
 }))
@@ -66,6 +76,10 @@ app.get('/destinations/:id/edit', catchAsync(async (req, res) => {
     const destination = await Destination.findById(req.params.id)
     res.render('destinations/edit', { destination });
 }))
+
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
+})
 
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;

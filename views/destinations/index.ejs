@@ -7,8 +7,24 @@
 
   <!-- Go through the DB and listing the destination title -->
   <% for(let destination of destinations) { %>
-  <li>
-    <a href="/destinations/<%= destination.id %> "><%= destination.title %></a>
-  </li>
+  <div class="card mb-3">
+    <div class="row">
+      <div class="col-md-4">
+        <img class="img-fluid" alt="" src="<%=destination.image%>" />
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><%= destination.title %></h5>
+          <p class="card-text"><%= destination.description %></p>
+          <p class="card-text">
+            <small class="text-muted"><%= destination.location%></small>
+          </p>
+          <a class="btn btn-primary" href="/destinations/<%=destination._id%>"
+            >View <%=destination.title%></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
   <% } %>
 </ul>

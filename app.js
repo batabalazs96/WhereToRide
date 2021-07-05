@@ -35,7 +35,7 @@ app.get('/destinations', catchAsync(async (req, res) => {
 }))
 
 app.post('/destinations', catchAsync(async (req, res, next) => {
-
+    if (!req.body.destination) throw new ExpressError('Invalid Destination Data', 400);
     const destination = new Destination(req.body.destination);
     await destination.save();
     res.redirect('/destinations')
@@ -68,7 +68,9 @@ app.get('/destinations/:id/edit', catchAsync(async (req, res) => {
 }))
 
 app.use((err, req, res, next) => {
-    res.send('Ohh boy, something went wrong')
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = "Oh no, Something wrong!"
+    res.status(statusCode).render('error', { err })
 })
 
 app.listen(3000, () => {

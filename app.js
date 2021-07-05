@@ -1,5 +1,7 @@
 const express = require('express');
 const ejsMate = require('ejs-mate');
+const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError');
 const path = require('path');
 const mongoose = require('mongoose');
 const Destination = require('./models/destination');
@@ -27,44 +29,43 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.get('/destinations', async (req, res) => {
+app.get('/destinations', catchAsync(async (req, res) => {
     const destinations = await Destination.find();
     res.render('destinations/index', { destinations });
-})
+}))
 
-app.post('/destinations', async (req, res, next) => {
-    try {
-        const destination = new Destination(req.body.destination);
-        await destination.save();
-        res.redirect('/destinations')
-    }
-    catch (e) { next(e) }
-})
+app.post('/destinations', catchAsync(async (req, res, next) => {
+
+    const destination = new Destination(req.body.destination);
+    await destination.save();
+    res.redirect('/destinations')
+
+}))
 
 
 app.get('/destinations/new', (req, res) => {
     res.render('destinations/new')
 })
 
-app.get('/destinations/:id', async (req, res) => {
+app.get('/destinations/:id', catchAsync(async (req, res) => {
     const destination = await Destination.findById(req.params.id)
     res.render('destinations/show', { destination });
-})
+}))
 
-app.put('/destinations/:id', async (req, res) => {
+app.put('/destinations/:id', catchAsync(async (req, res) => {
     const destination = await Destination.findByIdAndUpdate(req.params.id, req.body.destination);
     res.redirect(`/destinations/${destination._id}`);
-})
+}))
 
-app.delete('/destinations/:id', async (req, res) => {
+app.delete('/destinations/:id', catchAsync(async (req, res) => {
     await Destination.findByIdAndDelete(req.params.id)
     res.redirect('/destinations')
-})
+}))
 
-app.get('/destinations/:id/edit', async (req, res) => {
+app.get('/destinations/:id/edit', catchAsync(async (req, res) => {
     const destination = await Destination.findById(req.params.id)
     res.render('destinations/edit', { destination });
-})
+}))
 
 app.use((err, req, res, next) => {
     res.send('Ohh boy, something went wrong')

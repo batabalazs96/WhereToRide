@@ -1,12 +1,31 @@
 <% layout('layouts/boilerplate') -%>
-<h1>This is <%= destination.title %> page</h1>
-<img src="<%= destination.image %> " />
-<label for="description"></label>
-<p id="description"><%= destination.description %></p>
-<form action="/destinations/<%= destination._id %>/edit">
-  <button type="submit">Edit destination</button>
-</form>
-<form action="/destinations/<%=destination._id %>?_method=DELETE" method="post">
-  <button type="submit">DELETE</button>
-  <a href="/destinations">Back</a>
-</form>
+
+<div class="row">
+  <div class="col-6 offset-3">
+    <div class="card mb-3">
+      <img src="<%= destination.image%>" class="card-img-top" alt="..." />
+      <div class="card-body">
+        <h5 class="card-title"><%= destination.title%></h5>
+        <p class="card-text"><%= destination.description%></p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-muted"><%= destination.location%></li>
+      </ul>
+      <div class="card-body">
+        <a
+          class="card-link btn btn-info"
+          href="/destinations/<%=destination._id%>/edit"
+          >Edit</a
+        >
+        <form
+          class="d-inline"
+          action="/destinations/<%=destination._id%>?_method=DELETE"
+          method="POST"
+        >
+          <button class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+      <div class="card-footer text-muted">2 days ago</div>
+    </div>
+  </div>
+</div>

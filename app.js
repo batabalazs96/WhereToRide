@@ -5,6 +5,7 @@ const ExpressError = require('./utils/ExpressError');
 const path = require('path');
 const mongoose = require('mongoose');
 const { destinationSchema } = require('./schemas.js');
+const {reviewSchema} = require('./schemas.js');
 const Destination = require('./models/destination');
 const Review = require('./models/reviews');
 const methodOverride = require('method-override');
@@ -37,6 +38,16 @@ const validateDestination = (req, res, next) => {
     }
 }
 
+const validateReview = (req, res, next) => {
+    const {error} = reviewSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
 app.get('/', (req, res) => {
     res.render('home')
 })
@@ -60,7 +71,7 @@ app.get('/destinations/new', (req, res) => {
 })
 
 app.get('/destinations/:id', catchAsync(async (req, res) => {
-    const destination = await Destination.findById(req.params.id)
+    const destination = await Destination.findById(req.params.id).populate('reviews');
     res.render('destinations/show', { destination });
 }))
 
@@ -81,7 +92,7 @@ app.get('/destinations/:id/edit', catchAsync(async (req, res) => {
     res.render('destinations/edit', { destination });
 }))
 
-app.post('/destinations/:id/reviews', catchAsync(async (req,res) => {
+app.post('/destinations/:id/reviews',  validateReview, catchAsync(async (req,res) => {
     const destination = await Destination.findById(req.params.id);
     const review = new Review(req.body.review);
     destination.reviews.push(review);

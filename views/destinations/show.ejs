@@ -31,8 +31,9 @@
     <h1>Leave a review</h1>
     <form
       action="/destinations/<%= destination._id %>/reviews"
-      class="mb-3"
       method="POST"
+      class="mb-3 validated-form"
+      novalidate
     >
       <div>
         <label for="rating" class="form-label">Rating</label>
@@ -43,6 +44,7 @@
           max="5"
           name="review[rating]"
           id="rating"
+          required
         />
       </div>
       <div>
@@ -52,11 +54,20 @@
           id="body"
           cols="30"
           rows="10"
+          required
         ></textarea>
       </div>
       <div class="mt-3">
         <button class="btn btn-success">Done</button>
       </div>
     </form>
+    <% for(let review of destination.reviews) { %>
+    <div>
+      <div>
+        <h5>Rating: <%= review.rating %></h5>
+        <p>Review: <%= review.body %></p>
+      </div>
+    </div>
+    <% } %>
   </div>
 </div>

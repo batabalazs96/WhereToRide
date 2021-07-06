@@ -3,15 +3,19 @@
 <div class="row">
   <h1 class="text-center">New destination</h1>
   <div class="col-6 offset-3">
-    <form action="/destinations" method="POST">
+    <form action="/destinations" method="POST" novalidate class="validated-form">
       <div class="mb-3">
-        <label class="form-label" for="title">Title</label>
+        <label class="form-label" for="title" required>Title</label>
         <input
           class="form-control"
           type="text"
           id="title"
           name="destination[title]"
+          required
         />
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="location">Location</label>
@@ -20,7 +24,11 @@
           type="text"
           id="location"
           name="destination[location]"
+          required
         />
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="image">Image Url</label>
@@ -29,7 +37,11 @@
           type="text"
           id="image"
           name="destination[image]"
+          required
         />
+        <div class="valid-feedback">
+          Looks good!
+        </div>
       </div>
 
       <div class="mb-3">
@@ -39,7 +51,10 @@
           type="text"
           id="description"
           name="destination[description]"
-        ></textarea>
+          required  ></textarea>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
       </div>
       <div class="mb-3">
         <button class="btn btn-success">Add destination</button>

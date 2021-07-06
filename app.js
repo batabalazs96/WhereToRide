@@ -105,6 +105,7 @@ app.post('/destinations/:id/reviews',  validateReview, catchAsync(async (req,res
 
 app.delete('/destinations/:id/reviews/:reviewId', catchAsync(async(req,res)=>{
     const {id, reviewId} = req.params;
+    await Destination.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);
     res.redirect(`/destinations/${id}`);
 }))

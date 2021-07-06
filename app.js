@@ -6,6 +6,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const { destinationSchema } = require('./schemas.js');
 const Destination = require('./models/destination');
+const Review = require('./models/reviews');
 const methodOverride = require('method-override');
 const { findByIdAndUpdate } = require('./models/destination');
 
@@ -53,6 +54,7 @@ app.post('/destinations', validateDestination, catchAsync(async (req, res, next)
 }))
 
 
+
 app.get('/destinations/new', (req, res) => {
     res.render('destinations/new')
 })
@@ -72,9 +74,22 @@ app.delete('/destinations/:id', catchAsync(async (req, res) => {
     res.redirect('/destinations')
 }))
 
+
+
 app.get('/destinations/:id/edit', catchAsync(async (req, res) => {
     const destination = await Destination.findById(req.params.id)
     res.render('destinations/edit', { destination });
+}))
+
+app.post('/destinations/:id/reviews', catchAsync(async (req,res) => {
+    const destination = await Destination.findById(req.params.id);
+    const review = new Review(req.body.review);
+    destination.reviews.push(review);
+    await review.save();
+    await destination.save();
+    res.redirect(`/destinations/${destination._id}`);
+
+
 }))
 
 app.all('*', (req, res, next) => {

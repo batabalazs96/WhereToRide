@@ -6,6 +6,9 @@ const DestinationSchema = new Schema({
     distance: Number,
     image: String,
     location: String,
-    description: String
-})
+    description: String,
+    reviews : [{
+        type: Schema.Types.ObjectId, ref:'Reviews'
+    }]
+});
 module.exports = mongoose.model('Destination', DestinationSchema);

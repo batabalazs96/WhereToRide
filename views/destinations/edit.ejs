@@ -3,7 +3,12 @@
 <div class="row">
   <h1 class="text-center">New destination</h1>
   <div class="col-6 offset-3">
-    <form action="/destinations" method="POST" class="validated-form" novalidate>
+    <form
+      action="/destinations"
+      method="POST"
+      class="validated-form"
+      novalidate
+    >
       <div class="mb-3">
         <label class="form-label" for="title">Title</label>
         <input
@@ -14,9 +19,7 @@
           value="<%= destination.title %>"
           required
         />
-        <div class="valid-feedback">
-      Looks good!
-    </div>
+        <div class="valid-feedback">Looks good!</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="location">Location</label>
@@ -28,9 +31,7 @@
           value="<%= destination.location %>"
           required
         />
-        <div class="valid-feedback">
-      Looks good!
-    </div>
+        <div class="valid-feedback">Looks good!</div>
       </div>
       <div class="mb-3">
         <label class="form-label" for="image">Image Url</label>
@@ -42,9 +43,26 @@
           value="<%= destination.image %>"
           required
         />
-        <div class="valid-feedback">
-      Looks good!
-    </div>
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="price">Distance from Budapest</label>
+        <div class="input-group">
+          <span class="input-group-text" id="price-label">KM</span>
+          <input
+            type="text"
+            class="form-control"
+            id="distance"
+            placeholder="0.00"
+            aria-label="distance"
+            aria-describedby="price-label"
+            name="destination[distance]"
+            value="<%= destination.distance %> "
+            required
+          />
+        </div>
+        <div class="valid-feedback">Looks good!</div>
       </div>
 
       <div class="mb-3">
@@ -58,9 +76,7 @@
         >
         <%= destination.description %></textarea
         >
-        <div class="valid-feedback">
-          Looks good!
-        </div>
+        <div class="valid-feedback">Looks good!</div>
       </div>
       <div class="mb-3">
         <button class="btn btn-info">Update destination</button>

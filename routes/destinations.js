@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Destination = require('../models/destination');
 const {destinationSchema} = require('../schemas.js');
+const {isLoggedIn} = require('../middleware');
 
 const validateDestination = (req, res, next) => {
     const { error } = destinationSchema.validate(req.body);
@@ -30,7 +31,7 @@ router.post('/', validateDestination, catchAsync(async (req, res, next) => {
 
 
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn,  (req, res) => {
     res.render('destinations/new')
 })
 
@@ -43,12 +44,12 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('destinations/show', { destination });
 }))
 
-router.put('/:id', validateDestination, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, validateDestination, catchAsync(async (req, res) => {
     const destination = await Destination.findByIdAndUpdate(req.params.id, req.body.destination);
     res.redirect(`/destinations/${destination._id}`);
 }))
 
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
     await Destination.findByIdAndDelete(req.params.id);
     req.flash('success', 'Successfully deleted destination');
     res.redirect('/destinations');
@@ -56,7 +57,7 @@ router.delete('/:id', catchAsync(async (req, res) => {
 
 
 
-router.get('/:id/edit', catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
     const destination = await Destination.findById(req.params.id)
     if(!destination){
         req.flash('error', 'Cannot find the destination what you want edit!')

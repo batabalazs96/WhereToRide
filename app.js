@@ -9,10 +9,15 @@ const Destination = require('./models/destination');
 const Review = require('./models/reviews');
 const methodOverride = require('method-override');
 const { findByIdAndUpdate } = require('./models/destination');
-const destinations = require('./routes/destinations');
-const reviews = require('./routes/reviews');
+const destinationRoutes = require('./routes/destinations');
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy= require('passport-local');
+const User= require('./models/user')
+
 
 mongoose.connect('mongodb://localhost:27017/WhereToRide', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -47,14 +52,31 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next)=> {
+    console.log(req.session);
     res.locals.success= req.flash('success');
     res.locals.error= req.flash('error');
+    res.locals.currentUser = req.user;
     next();
 })
 
-app.use('/destinations', destinations)
-app.use('/destinations/:id/reviews', reviews)
+app.get('/fakeUser', async(req, res) => {
+    const user = new User({email: 'bataa@gmail.com', username: 'bata'})
+    const newUser = await User.register(user, 'chicken');
+    res.send(newUser);
+})
+
+app.use('/', userRoutes);
+app.use('/destinations', destinationRoutes);
+app.use('/destinations/:id/reviews', reviewRoutes);
+
 
 
 app.get('/', (req, res) => {

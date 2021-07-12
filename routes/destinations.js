@@ -3,6 +3,7 @@ const router = express.Router()
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Destination = require('../models/destination');
+const {destinationSchema} = require('../schemas.js');
 
 const validateDestination = (req, res, next) => {
     const { error } = destinationSchema.validate(req.body);
@@ -22,7 +23,8 @@ router.get('/', catchAsync(async (req, res) => {
 router.post('/', validateDestination, catchAsync(async (req, res, next) => {
     const destination = new Destination(req.body.destination);
     await destination.save();
-    res.redirect('/destinations')
+    req.flash('success', 'Succesfully made a new destination!');
+    res.redirect('/destinations');
 
 }))
 

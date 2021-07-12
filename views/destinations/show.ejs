@@ -10,8 +10,10 @@
       </div>
       <ul class="list-group list-group-flush">
         <li class="list-group-item text-muted"><%= destination.location%></li>
+        <li class="list-group-item"><%= destination.author.username%></li>
         <li class="list-group-item"><%= destination.distance%> km</li>
       </ul>
+      <% if(currentUser && destination.author.equals(currentUser._id)){ %>
       <div class="card-body">
         <a
           class="card-link btn btn-info"
@@ -26,10 +28,12 @@
           <button class="btn btn-danger">Delete</button>
         </form>
       </div>
+      <% } %>
       <div class="card-footer text-muted">2 days ago</div>
     </div>
   </div>
   <div class="col-6">
+    <% if(currentUser){%>
     <h1>Leave a review</h1>
     <form
       action="/destinations/<%= destination._id %>/reviews"
@@ -63,17 +67,20 @@
         <button class="btn btn-success">Done</button>
       </div>
     </form>
-    <% for(let review of destination.reviews) { %>
+    <% } %> <% for(let review of destination.reviews) { %>
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title">Rating: <%= review.rating %></h5>
+        <h5 class="card-title">Rating: <%= review.author.username%></h5>
         <p class="card-text">Review: <%= review.body %></p>
+        <% if(currentUser && review.author.equals(currentUser._id)){ %>
         <form
           action="/destinations/<%=destination._id%>/reviews/<%=review._id%>?_method=DELETE"
           method="POST"
         >
           <button class="btn btn-danger">Delete</button>
         </form>
+        <% }%>
       </div>
     </div>
     <% } %>

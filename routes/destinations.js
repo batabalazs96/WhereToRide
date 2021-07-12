@@ -1,20 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
-const Destination = require('../models/destination');
-const {destinationSchema} = require('../schemas.js');
-const {isLoggedIn} = require('../middleware');
 
-const validateDestination = (req, res, next) => {
-    const { error } = destinationSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
+const Destination = require('../models/destination');
+
+const {isLoggedIn, isAuthor, validateDestination} = require('../middleware');
+
+
 
 router.get('/', catchAsync(async (req, res) => {
     const destinations = await Destination.find();
@@ -23,6 +15,7 @@ router.get('/', catchAsync(async (req, res) => {
 
 router.post('/', validateDestination, catchAsync(async (req, res, next) => {
     const destination = new Destination(req.body.destination);
+    destination.author = req.user._id;
     await destination.save();
     req.flash('success', 'Succesfully made a new destination!');
     res.redirect('/destinations');
@@ -36,20 +29,27 @@ router.get('/new', isLoggedIn,  (req, res) => {
 })
 
 router.get('/:id', catchAsync(async (req, res) => {
-    const destination = await Destination.findById(req.params.id).populate('reviews');
+    const destination = await Destination.findById(req.params.id).populate({
+        path: 'reviews',
+        populate: {path: 'author'}   
+    }).populate('author');
     if(!destination){
         req.flash('error', 'Cannot find the destination!')
         return res.redirect('/destinations')
     }
+    
     res.render('destinations/show', { destination });
 }))
 
-router.put('/:id', isLoggedIn, validateDestination, catchAsync(async (req, res) => {
-    const destination = await Destination.findByIdAndUpdate(req.params.id, req.body.destination);
+router.put('/:id', isLoggedIn, isAuthor,  validateDestination, catchAsync(async (req, res) => {
+    const {id} = req.params;
+    const destination = await Destination.findById(id, {...req.body.destination});
+    //const destination = await Destination.findByIdAndUpdate(id, req.body.destination);
+    req.flash('success', 'Successfully deleted destination');
     res.redirect(`/destinations/${destination._id}`);
 }))
 
-router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     await Destination.findByIdAndDelete(req.params.id);
     req.flash('success', 'Successfully deleted destination');
     res.redirect('/destinations');
@@ -57,12 +57,14 @@ router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
 
 
 
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
-    const destination = await Destination.findById(req.params.id)
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
+    const {id} = req.params;
+    const destination = await Destination.findById(id)
     if(!destination){
         req.flash('error', 'Cannot find the destination what you want edit!')
         return res.redirect('/destinations')
     }
+    
     res.render('destinations/edit', { destination });
 }))
 

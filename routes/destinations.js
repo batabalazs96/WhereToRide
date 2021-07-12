@@ -36,6 +36,10 @@ router.get('/new', (req, res) => {
 
 router.get('/:id', catchAsync(async (req, res) => {
     const destination = await Destination.findById(req.params.id).populate('reviews');
+    if(!destination){
+        req.flash('error', 'Cannot find the destination!')
+        return res.redirect('/destinations')
+    }
     res.render('destinations/show', { destination });
 }))
 
@@ -54,6 +58,10 @@ router.delete('/:id', catchAsync(async (req, res) => {
 
 router.get('/:id/edit', catchAsync(async (req, res) => {
     const destination = await Destination.findById(req.params.id)
+    if(!destination){
+        req.flash('error', 'Cannot find the destination what you want edit!')
+        return res.redirect('/destinations')
+    }
     res.render('destinations/edit', { destination });
 }))
 

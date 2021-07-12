@@ -42,11 +42,18 @@ router.get('/:id', catchAsync(async (req, res) => {
         req.flash('error', 'Cannot find the destination!')
         return res.redirect('/destinations')
     }
+    
     res.render('destinations/show', { destination });
 }))
 
 router.put('/:id', isLoggedIn, validateDestination, catchAsync(async (req, res) => {
-    const destination = await Destination.findByIdAndUpdate(req.params.id, req.body.destination);
+    const {id} = req.params;
+    const destination = await Destination.findById(id, {...req.body.destination});
+    if( !destination.author.equals(req.user._id)){
+        req.flash('error', 'You not have premission to do that');
+        return res.redirect(`/destinations/${id}`);
+    }
+    //const destination = await Destination.findByIdAndUpdate(id, req.body.destination);
     res.redirect(`/destinations/${destination._id}`);
 }))
 
@@ -59,10 +66,15 @@ router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
 
 
 router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
-    const destination = await Destination.findById(req.params.id)
+    const {id} = req.params;
+    const destination = await Destination.findById(id)
     if(!destination){
         req.flash('error', 'Cannot find the destination what you want edit!')
         return res.redirect('/destinations')
+    }
+    if( !destination.author.equals(req.user._id)){
+        req.flash('error', 'You not have premission to do that');
+        return res.redirect(`/destinations/${id}`);
     }
     res.render('destinations/edit', { destination });
 }))

@@ -14,13 +14,15 @@ router.post('/register', catchAsync(async (req,res) => {
     const {email, username, password} = req.body;
     const user= new User ({email, username});
     const registeredUser = await User.register(user, password);
-    console.log(registeredUser);
-    req.flash('success','Welcome');
-    res.redirect('/destinations');
-} catch(e) {
-    req.flash('error', e.message);
-    res.redirect('register');
-}
+    req.login(registeredUser, err =>{
+        if(err) return next(err);
+        req.flash('success','Welcome');
+        res.redirect('/destinations');
+    })
+    } catch(e) {
+        req.flash('error', e.message);
+        res.redirect('register');
+    }
 
 }))
 

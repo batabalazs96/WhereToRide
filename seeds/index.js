@@ -22,6 +22,7 @@ const seedDB = async () => {
     for (let i = 0; i < 50; i++) {
          const random100 = Math.floor(Math.random()*100)
          const destination = new Destination({
+             author: '60ec574c11a6fe07608987bd',
              title: `${cities[random100].city}`,
              distance: random100,
              image: "https://source.unsplash.com/collection/483251",

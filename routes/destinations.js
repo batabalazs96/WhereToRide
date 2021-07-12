@@ -23,6 +23,7 @@ router.get('/', catchAsync(async (req, res) => {
 
 router.post('/', validateDestination, catchAsync(async (req, res, next) => {
     const destination = new Destination(req.body.destination);
+    destination.author = req.user._id;
     await destination.save();
     req.flash('success', 'Succesfully made a new destination!');
     res.redirect('/destinations');
@@ -36,7 +37,7 @@ router.get('/new', isLoggedIn,  (req, res) => {
 })
 
 router.get('/:id', catchAsync(async (req, res) => {
-    const destination = await Destination.findById(req.params.id).populate('reviews');
+    const destination = await Destination.findById(req.params.id).populate('reviews').populate('author');
     if(!destination){
         req.flash('error', 'Cannot find the destination!')
         return res.redirect('/destinations')

@@ -45,8 +45,9 @@ router.put('/:id', validateDestination, catchAsync(async (req, res) => {
 }))
 
 router.delete('/:id', catchAsync(async (req, res) => {
-    await Destination.findByIdAndDelete(req.params.id)
-    res.redirect('/destinations')
+    await Destination.findByIdAndDelete(req.params.id);
+    req.flash('success', 'Successfully deleted destination');
+    res.redirect('/destinations');
 }))
 
 

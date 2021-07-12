@@ -9,9 +9,10 @@ const {isLoggedIn, isAuthor, validateReview} = require('../middleware');
 
 
 
-router.post('/',  validateReview, catchAsync(async (req,res) => {
+router.post('/', isLoggedIn, validateReview, catchAsync(async (req,res) => {
     const destination = await Destination.findById(req.params.id);
     const review = new Review(req.body.review);
+    review.author = req.user._id;
     destination.reviews.push(review);
     await review.save();
     await destination.save();

@@ -2,6 +2,7 @@ const ExpressError = require('./utils/ExpressError');
 const {destinationSchema} = require('./schemas.js');
 const Destination = require('./models/destination');
 const {reviewSchema} = require('./schemas.js');
+const Review = require('./models/reviews');
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -40,4 +41,14 @@ module.exports.validateReview = (req, res, next) => {
     } else {
         next();
     }
+}
+
+module.exports.isReviewAuthor = async ( req, res, next) =>{
+    const {id, reviewId} = req.params;
+    const review = await Review.findById(reviewId);
+    if( !review.author.equals(req.user._id)){
+        req.flash('error', 'You not have premission to do that');
+        return res.redirect(`/destinations/${id}`);
+    }
+    next();
 }

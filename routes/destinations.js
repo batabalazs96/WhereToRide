@@ -29,7 +29,10 @@ router.get('/new', isLoggedIn,  (req, res) => {
 })
 
 router.get('/:id', catchAsync(async (req, res) => {
-    const destination = await Destination.findById(req.params.id).populate('reviews').populate('author');
+    const destination = await Destination.findById(req.params.id).populate({
+        path: 'reviews',
+        populate: {path: 'author'}   
+    }).populate('author');
     if(!destination){
         req.flash('error', 'Cannot find the destination!')
         return res.redirect('/destinations')

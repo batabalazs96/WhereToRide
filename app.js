@@ -12,6 +12,7 @@ const { findByIdAndUpdate } = require('./models/destination');
 const destinations = require('./routes/destinations');
 const reviews = require('./routes/reviews');
 const session = require('express-session');
+const flash = require('connect-flash');
 
 mongoose.connect('mongodb://localhost:27017/WhereToRide', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -44,6 +45,13 @@ const sessionConfig = {
     }
 }
 app.use(session(sessionConfig))
+app.use(flash());
+
+app.use((req, res, next)=> {
+    res.locals.success= req.flash('success');
+    res.locals.error= req.flash('error');
+    next();
+})
 
 app.use('/destinations', destinations)
 app.use('/destinations/:id/reviews', reviews)

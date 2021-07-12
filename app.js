@@ -9,8 +9,9 @@ const Destination = require('./models/destination');
 const Review = require('./models/reviews');
 const methodOverride = require('method-override');
 const { findByIdAndUpdate } = require('./models/destination');
-const destinations = require('./routes/destinations');
-const reviews = require('./routes/reviews');
+const destinationRoutes = require('./routes/destinations');
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
@@ -70,8 +71,10 @@ app.get('/fakeUser', async(req, res) => {
     res.send(newUser);
 })
 
-app.use('/destinations', destinations)
-app.use('/destinations/:id/reviews', reviews)
+app.use('/', userRoutes);
+app.use('/destinations', destinationRoutes);
+app.use('/destinations/:id/reviews', reviewRoutes);
+
 
 
 app.get('/', (req, res) => {

@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const catchAsync = require('../utils/catchAsync');
 const destinations = require('../controllers/destinations');
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
 
 const Destination = require('../models/destination');
 

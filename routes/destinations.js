@@ -25,11 +25,11 @@ router.get('/new', isLoggedIn,  destinations.renderNewForm);
 
 router.route('/:id')
     .get(catchAsync(destinations.showDestination))
-    .put(isLoggedIn, isAuthor,  validateDestination, catchAsync(destinations.updateDestination))
+    .put(isLoggedIn, isAuthor, upload.array('image'), validateDestination, catchAsync(destinations.updateDestination))
     .delete(isLoggedIn, isAuthor, catchAsync(destinations.deleteDestination));
 
 
 
-router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(destinations.renderEditFormn))
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(destinations.renderEditForm))
 
 module.exports = router;

@@ -7,8 +7,10 @@ module.exports.index = async (req, res) => {
 
 module.exports.createDestination = async (req, res, next) => {
     const destination = new Destination(req.body.destination);
+    destination.images = req.files.map(f => ({url : f.path, filename : f.filename}));
     destination.author = req.user._id;
     await destination.save();
+    console.log(destination);
     req.flash('success', 'Succesfully made a new destination!');
     res.redirect('/destinations');
 

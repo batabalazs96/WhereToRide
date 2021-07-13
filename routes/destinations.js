@@ -14,11 +14,11 @@ const {isLoggedIn, isAuthor, validateDestination} = require('../middleware');
 
 router.route('/')
     .get(catchAsync(destinations.index))
-    //.post(validateDestination, catchAsync(destinations.createDestination))
-    .post(upload.array('image'), (req, res) =>{
-        console.log(req.body, req.file);
-        res.send('it worked')
-    })
+    .post(isLoggedIn,  upload.array('image'), validateDestination, catchAsync(destinations.createDestination))
+    // .post(upload.array('image'), (req, res) =>{
+    //     console.log(req.body, req.files);
+    //     res.send('it worked')
+    // })
 
 
 router.get('/new', isLoggedIn,  destinations.renderNewForm);

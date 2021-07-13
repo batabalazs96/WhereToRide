@@ -5,7 +5,12 @@ const Review = require('./reviews')
 const DestinationSchema = new Schema({
     title:String,
     distance: Number,
-    image: String,
+    images: [
+        {
+            url : String,
+            filename : String
+        }
+    ],
     location: String,
     description: String,
     author: {

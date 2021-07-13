@@ -3,7 +3,7 @@ const Joi = require('joi');
 module.exports.destinationSchema = Joi.object({
     destination: Joi.object({
         title: Joi.string().required(),
-        image: Joi.string().required(),
+        //image: Joi.string().required(),
         distance: Joi.number().required(),
         location: Joi.string().required(),
         description: Joi.string().required()

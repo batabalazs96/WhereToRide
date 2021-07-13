@@ -8,9 +8,12 @@ cloudinary.config({
 });
 
 const storage = new CloudinaryStorage({
-    cloudinary,
-    folder: 'WhereToRide',
-    allowedFormats: ['jpeg', 'png', 'jpg']
+    cloudinary, 
+    params : {
+        folder: 'WhereToRide',
+        allowedFormats: ['jpeg', 'png', 'jpg']
+    }
+    
     
 });
 

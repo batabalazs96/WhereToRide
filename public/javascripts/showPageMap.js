@@ -5,6 +5,12 @@ const map = new mapboxgl.Map({
   center: destination.geometry.coordinates, // starting position [lng, lat]
   zoom: 9, // starting zoom
 });
-const  marker1 = new mapboxgl.Marker()
+new mapboxgl.Marker()
 .setLngLat(destination.geometry.coordinates)
+.setPopup(
+    new mapboxgl.Popup({ offset: 25 })
+        .setHTML(
+            `<h3>${destination.title}</h3><p>${destination.location}</p>`
+        )
+)
 .addTo(map);

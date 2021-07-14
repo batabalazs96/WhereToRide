@@ -22,9 +22,10 @@ const seedDB = async () => {
     for (let i = 0; i < 50; i++) {
          const random100 = Math.floor(Math.random()*100)
          const destination = new Destination({
-             author: '60ec574c11a6fe07608987bd',
+             author: '60ec5ccd5960611cc873ffcf',
              title: `${cities[random100].city}`,
              distance: random100,
+             geometry: { type: 'Point', coordinates: [ 19.04083, 47.49833 ] },
              description: `${sample(descriptors)}`,
              images: [
                 {

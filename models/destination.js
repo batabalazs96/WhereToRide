@@ -16,6 +16,17 @@ const DestinationSchema = new Schema({
     distance: Number,
     images: [ImageSchema],
     location: String,
+    geometry: {
+        type: {
+          type: String, 
+          enum: ['Point'],
+          required: true
+        },
+        coordinates: {
+          type: [Number],
+          required: true
+        }
+    },
     description: String,
     author: {
         type: Schema.Types.ObjectId, ref:'User'

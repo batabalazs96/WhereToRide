@@ -15,13 +15,14 @@ module.exports.createDestination = async (req, res, next) => {
         query: req.body.destination.location,
         limit: 1
     }).send()
-    res.send(geoData.body.features[0].geometry.coordinates);
-    // const destination = new Destination(req.body.destination);
-    // destination.images = req.files.map(f => ({url : f.path, filename : f.filename}))
-    // destination.author = req.user._id;
-    // await destination.save();
-    // req.flash('success', 'Succesfully made a new destination!');
-    // res.redirect('/destinations');
+    const destination = new Destination(req.body.destination);
+    destination.geometry = geoData.body.features[0].geometry;
+    destination.images = req.files.map(f => ({url : f.path, filename : f.filename}))
+    destination.author = req.user._id;
+    console.log(destination);
+    await destination.save();
+    req.flash('success', 'Succesfully made a new destination!');
+    res.redirect('/destinations');
 
 }
 

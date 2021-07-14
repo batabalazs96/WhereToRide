@@ -11,6 +11,8 @@ ImageSchema.virtual('thumbnail').get(function() {
     return this.url.replace('/upload', '/upload/w_200');
 });
 
+const opts = { toJSON: { virtuals: true } };
+
 const DestinationSchema = new Schema({
     title:String,
     distance: Number,
@@ -34,6 +36,12 @@ const DestinationSchema = new Schema({
     reviews : [{
         type: Schema.Types.ObjectId, ref:'Reviews'
     }]
+}, opts);
+
+DestinationSchema.virtual('properties.popUpMarkup').get(function () {
+    return `
+    <strong><a href="/destinations/${this._id}">${this.title}</a><strong>
+    <p>${this.description.substring(0, 20)}...</p>`
 });
 
 DestinationSchema.post('findOneAndDelete', async function (doc) {

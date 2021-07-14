@@ -25,8 +25,21 @@ const seedDB = async () => {
              author: '60ec574c11a6fe07608987bd',
              title: `${cities[random100].city}`,
              distance: random100,
-             image: "https://source.unsplash.com/collection/483251",
-             description: `${sample(descriptors)}`
+             description: `${sample(descriptors)}`,
+             images: [
+                {
+                  url: 'https://res.cloudinary.com/diavkvh4w/image/upload/v1626206710/WhereToRide/xjlit8vcu7k2mhhse7cu.png',
+                  filename: 'WhereToRide/xjlit8vcu7k2mhhse7cu'
+                },
+                {
+                  url: 'https://res.cloudinary.com/diavkvh4w/image/upload/v1626206710/WhereToRide/n1jkpc0v8noella9yttk.png',
+                  filename: 'WhereToRide/n1jkpc0v8noella9yttk'
+                },
+                {
+                  url: 'https://res.cloudinary.com/diavkvh4w/image/upload/v1626206710/WhereToRide/qhhs36li59dnd3rsgaho.png',
+                  filename: 'WhereToRide/qhhs36li59dnd3rsgaho'
+                }
+              ]
             })
         await destination.save();
         console.log(destination)

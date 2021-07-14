@@ -1,3 +1,9 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
+console.log(process.env.CLOUDINARY_CLOUD_NAME)
+
 const express = require('express');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
@@ -38,6 +44,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 
 const sessionConfig = {
     secret : 'thisshouldbeabettersecret!',
@@ -60,7 +70,6 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next)=> {
-    console.log(req.session);
     res.locals.success= req.flash('success');
     res.locals.error= req.flash('error');
     res.locals.currentUser = req.user;

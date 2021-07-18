@@ -24,11 +24,11 @@ const passport = require('passport');
 const LocalStrategy= require('passport-local');
 const User= require('./models/user');
 const helmet= require('helmet');
-const dbUrl = 'mongodb://localhost:27017/WhereToRide';
+const dbUrl = process.env.DB_URL;
 const MongoStore = require('connect-mongo');
 
 //'mongodb://localhost:27017/WhereToRide'
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(dbUrl ||  'mongodb://localhost:27017/WhereToRide', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -93,12 +93,14 @@ app.use(
     })
 );
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
 const store =  MongoStore.create({
     mongoUrl: dbUrl,
-    secret : 'thisshouldbeabettersecret!',
+    secret,
     touchAfter: 24 * 3600
   })
 
@@ -106,7 +108,7 @@ const store =  MongoStore.create({
 const sessionConfig = {
     store,
     name: 'blah',
-    secret : 'thisshouldbeabettersecret!',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {

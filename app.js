@@ -24,9 +24,10 @@ const passport = require('passport');
 const LocalStrategy= require('passport-local');
 const User= require('./models/user');
 const helmet= require('helmet');
+const dbUrl = process.env.DB_URL;
 
-
-mongoose.connect('mongodb://localhost:27017/WhereToRide', { useNewUrlParser: true, useUnifiedTopology: true });
+//'mongodb://localhost:27017/WhereToRide'
+mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

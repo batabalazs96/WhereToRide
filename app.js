@@ -41,7 +41,7 @@ const app = express();
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
-console.log("macsek");
+console.log("macseka");
 
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))

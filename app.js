@@ -87,6 +87,7 @@ app.use(
                 "data:",
                 "https://res.cloudinary.com/diavkvh4w/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
                 "https://images.unsplash.com/",
+                "https://www.cornmarketinsurance.co.uk/"
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
         },

@@ -24,9 +24,11 @@ const passport = require('passport');
 const LocalStrategy= require('passport-local');
 const User= require('./models/user');
 const helmet= require('helmet');
+const dbUrl = process.env.DB_URL;
+const MongoStore = require('connect-mongo');
 
-
-mongoose.connect('mongodb://localhost:27017/WhereToRide', { useNewUrlParser: true, useUnifiedTopology: true });
+//'mongodb://localhost:27017/WhereToRide'
+mongoose.connect(dbUrl ||  'mongodb://localhost:27017/WhereToRide', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -39,7 +41,7 @@ const app = express();
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
-
+console.log("macseka");
 
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
@@ -85,20 +87,29 @@ app.use(
                 "data:",
                 "https://res.cloudinary.com/diavkvh4w/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
                 "https://images.unsplash.com/",
+                "https://www.cornmarketinsurance.co.uk/"
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
         },
     })
 );
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
+const store =  MongoStore.create({
+    mongoUrl: dbUrl,
+    secret,
+    touchAfter: 24 * 3600
+  })
 
 
 const sessionConfig = {
+    store,
     name: 'blah',
-    secret : 'thisshouldbeabettersecret!',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -155,6 +166,9 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err })
 })
 
-app.listen(3000, () => {
-    console.log('Server is running...');
+console.log("macsek")
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server is running...${port}`);
 })

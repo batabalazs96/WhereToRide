@@ -1,40 +1,40 @@
 <% layout('layouts/boilerplate') -%>
-
-<div class="row">
-  <h1 class="text-center">New destination</h1>
-  <div class="col-6 offset-3">
-    <form
-      action="/destinations"
-      method="POST"
-      novalidate
-      class="validated-form"
-      enctype="multipart/form-data"
-    >
-      <div class="mb-3">
-        <label class="form-label" for="title" required>Title</label>
-        <input
-          class="form-control"
-          type="text"
-          id="title"
-          name="destination[title]"
-          required
-        />
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="mb-3">
-        <label class="form-label" for="location">Location</label>
-        <input
-          class="form-control"
-          type="text"
-          id="location"
-          name="destination[location]"
-          required
-        />
-        <div class="valid-feedback">Looks good!</div>
-      </div>
-      <div class="mb-3">
-        <input type="file" name="image" id="" multiple />
-        <!-- <label class="form-label" for="image">Image Url</label>
+<div class="container mt-3">
+  <div class="row">
+    <h1 class="text-center">New destination</h1>
+    <div class="col-12 col-md-6 offset-md-3">
+      <form
+        action="/destinations"
+        method="POST"
+        novalidate
+        class="validated-form"
+        enctype="multipart/form-data"
+      >
+        <div class="mb-3">
+          <label class="form-label" for="title" required>Title</label>
+          <input
+            class="form-control"
+            type="text"
+            id="title"
+            name="destination[title]"
+            required
+          />
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="location">Location</label>
+          <input
+            class="form-control"
+            type="text"
+            id="location"
+            name="destination[location]"
+            required
+          />
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+        <div class="mb-3">
+          <input type="file" name="image" id="" multiple />
+          <!-- <label class="form-label" for="image">Image Url</label>
         <input
           class="form-control"
           type="text"
@@ -43,42 +43,43 @@
           required
         />
         <div class="valid-feedback">Looks good!</div> -->
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label" for="price">Distance from Budapest</label>
-        <div class="input-group">
-          <span class="input-group-text" id="price-label">KM</span>
-          <input
-            type="text"
-            class="form-control"
-            id="distance"
-            placeholder="0.00"
-            aria-label="distance"
-            aria-describedby="price-label"
-            name="destination[distance]"
-            required
-          />
         </div>
-        <div class="valid-feedback">Looks good!</div>
-      </div>
 
-      <div class="mb-3">
-        <label class="form-label" for="description">Description</label>
-        <textarea
-          class="form-control"
-          type="text"
-          id="description"
-          name="destination[description]"
-          required
-        ></textarea>
-        <div class="valid-feedback">Looks good!</div>
-      </div>
+        <div class="mb-3">
+          <label class="form-label" for="price">Distance from Budapest</label>
+          <div class="input-group">
+            <span class="input-group-text" id="price-label">KM</span>
+            <input
+              type="text"
+              class="form-control"
+              id="distance"
+              placeholder="0.00"
+              aria-label="distance"
+              aria-describedby="price-label"
+              name="destination[distance]"
+              required
+            />
+          </div>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
 
-      <div class="mb-3">
-        <button class="btn btn-success">Add destination</button>
-      </div>
-    </form>
-    <a href="/destinations">All destinations</a>
+        <div class="mb-3">
+          <label class="form-label" for="description">Description</label>
+          <textarea
+            class="form-control"
+            type="text"
+            id="description"
+            name="destination[description]"
+            required
+          ></textarea>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <div class="mb-3 d-flex justify-content-around">
+          <button class="btn btn-success">Add destination</button>
+          <a class="btn btn-secondary" href="/destinations">All destinations</a>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
